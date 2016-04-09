@@ -54,44 +54,38 @@ $today = date("Y-m-d");
  */
 
 
-$html ='<h1>header 1</h1>';
+// $html ='<h1>header 1</h1>';
 
-  if(strstr($html,'<') !== false)
-  {
-     $after = str_replace('<', '&lt;',$html);
-  }
+//   if(strstr($html,'<') !== false)
+//   {
+//      $after = str_replace('<', '&lt;',$html);
+//   }
 
-echo $after;
+// echo $after;
 
 
 function html_escape($html)
 {
-  if(strstr($html,'&') !== false)
+  $spch = array('&','"','\'','<','>');
+  $con = array( '&amp;','&quot;','&apos;','&lt;','&gt;');
+  $r_con = strstr($html,'&' || '"' || '\'' || '<' || '>');
+
+
+  if($r_con !== "")
   {
-    $after = str_replace('&', '&amp;',$html);
-     return $after;
-  }
-  elseif(strstr($html,'"') !== false)
-  {
-    $after = str_replace('"', '&quot;',$html);
-     return $after;
-  }
-  elseif(strstr($html,'\'') !== false)
-  {
-    $after = str_replace('\'','&apos;',$html);
+    $after = str_replace($spch,$con,$html);
     return $after;
-  }
-  elseif(strstr($html,'<') !== false)
-  {
-    $after = str_replace('<','&lt;',$html);
-    return $after;
-  }
-  elseif(strstr($html,'>') !== false)
-  {
-    $after = str_replace('>','&gt;',$html);
-    return $after;
-  }
+ }else
+ {
+  echo $html;
+ }
+
 }
+
+// $html ='<h1>header&1</h1>';
+// echo html_escape($html);
+
+
 
 
 /**
@@ -146,8 +140,8 @@ function get_tax_price($price) {
 function write_log($message, $level)
 {
   $fileName = "{$level}.log";
-  $createAt = date('Y-m-d H:i:s');
-  $data = $createAt . $message ;
+  $createAt = date('Y-m-d H:i:s: ');
+  $data = $createAt . $message . "\n";
 
   if(!$fp = fopen($fileName,"a"))
   {
@@ -163,8 +157,10 @@ function write_log($message, $level)
   fclose($fp);
 }
 
-write_log('error message 2', 'error');
-write_log('debug message 1', 'debug');
+// echo date('Y-m-d H:i:s');
+
+// write_log('error message 2', 'error');
+// write_log('debug message 1', 'debug');
 
 
 /**
@@ -203,20 +199,23 @@ write_log('debug message 1', 'debug');
  * @return array 指定されたカラムの値の配列
  */
 
- // foreach ($users as $user) {
- //   echo $user['email'] . '<br>';
- // }
+//  foreach ($users as $user) {
+//    $newarray[] = $user['email'];
+//  }
+
+
+// var_dump($newarray);
 
 function array_column(array $data, $column) {
    foreach( $data as $datalist)
-   {
-     return $datalist[$column];
+    {
+     $newarray[] = $datalist[$column];
     }
+    return $newarray;
 }
 
-echo array_column($users, 'email');
+// var_dump(array_column($users, 'email'));
 
-echo '<br><br>';
 ///////////////////////////////////////////////////////////////////////////////
 // 応用要件の関数
 // PHP には array_sum() という配列の値の合計値を返す関数があります。
@@ -252,18 +251,19 @@ echo '<br><br>';
 
 function array_sum_recursive(array $numbers)
 {
-  $num1 = count($numbers);
-  $sum = 0;
-
-  if(count($num1))
+foreach ($numbers as $number) {
+  if(is_array($number))
   {
-    foreach ($numbers as $number)
-    {
-    $sum += $number;
-    return $sum;
-    }
+    array_sum_recursive($number);
   }
+  else
+  {
+    $sum =0 ;
+    $sum += $number;
+  }
+ }
 }
+
 
  $sum = array_sum_recursive(array(1, 2, 3));
 var_dump($sum);
