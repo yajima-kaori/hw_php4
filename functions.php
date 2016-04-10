@@ -235,38 +235,40 @@ function array_column(array $data, $column) {
  * 配列が入れ子になっていても動作する
  *
  */
- // $sum = array_sum_recursive(array(1, 2, 3));
- // echo $sum;
- // $sum == 6
+
+ // $sum == 6;
 
  // $sum = array_sum_recursive(array(1, arary(2, 3), 4));
  // $sum == 10
- /*
- * $sum = array_sum_recursive(array(1, arary(2, array(3, -5)), 4));
- * // $sum == 5
- *
- * @param array $numbers 数字の配列
- * @return int|float  配列の中の値の合計値
- */
+
+ // $sum = array_sum_recursive(array(1, arary(2, array(3, -5)), 4));
+
+ // * // $sum == 5
+ // *
+ // * @param array $numbers 数字の配列
+ // * @return int|float  配列の中の値の合計値
+
+
 
 function array_sum_recursive(array $numbers)
 {
-foreach ($numbers as $number) {
-  if(is_array($number))
+  foreach ($numbers as $number)
   {
-    array_sum_recursive($number);
+    if(is_array($number))
+    {
+      $number = array_sum_recursive($number);
+    }
+    else
+    {
+      $number += $number;
+    }
   }
-  else
-  {
-    $sum =0 ;
-    $sum += $number;
-  }
- }
+  return $number;
 }
 
-
- $sum = array_sum_recursive(array(1, 2, 3));
-var_dump($sum);
+ $sum = array_sum_recursive(array(1, arary(2, array(3, -5)), 4));
+ // $sum = array_sum_recursive(array(1, 2, 3));
+ echo $sum;
 
 // function recursion($a)
 // {
