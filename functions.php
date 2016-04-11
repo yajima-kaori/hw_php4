@@ -238,7 +238,7 @@ function array_column(array $data, $column) {
 
  // $sum == 6;
 
- // $sum = array_sum_recursive(array(1, arary(2, 3), 4));
+ // $sum = array_sum_recursive(array(1, array(2, 3), 4));
  // $sum == 10
 
  // $sum = array_sum_recursive(array(1, arary(2, array(3, -5)), 4));
@@ -250,25 +250,39 @@ function array_column(array $data, $column) {
 
 
 
+
 function array_sum_recursive(array $numbers)
 {
+
   foreach ($numbers as $number)
   {
     if(is_array($number))
     {
+
       $number = array_sum_recursive($number);
     }
     else
     {
-      $number += $number;
+      if(!isset($sum))
+      {
+      $sum = 0;
+      }
+      $sum += $number;
+      if(isset($sum))
+      {
+      $sum += $number;
+      }
     }
   }
-  return $number;
+  return $sum;
 }
 
- $sum = array_sum_recursive(array(1, arary(2, array(3, -5)), 4));
+ // $sum = array_sum_recursive(array(1, array(2, array(3, -5)), 4));
  // $sum = array_sum_recursive(array(1, 2, 3));
- echo $sum;
+
+
+$sum = array_sum_recursive(array(1, array(2, 3), 4));
+echo $sum;
 
 // function recursion($a)
 // {
